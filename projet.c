@@ -11,6 +11,24 @@ typedef struct {
     int eff;
 } classe;
 
+// Fonction pour gerer la mise a jour apres suppression et modifcation 
+void Miseajour(classe classes[], int nbclasses){
+    FILE *maj = fopen("/home/general-tech/Documents/PROJECT-C/Classes.txt", "w") ;
+    if (maj == NULL) {
+        printf("Erreur : impossible de réécrire le fichier.\n");
+        return;
+    }
+    for (int i = 0; i < nbclasses; i++) {
+        fprintf(maj, "%s %s %s %d\n",
+                classes[i].code,
+                classes[i].nom,
+                classes[i].niveau,
+                classes[i].eff);
+    }
+    fclose(maj);
+}
+
+
 // Ajouter une classe et enregistrement dans fichiers
 void AjouterClasse(classe classes[], int *nbClasses) {
     classe nouvelle;
@@ -112,6 +130,8 @@ void ModifierClasse(classe classes[], int nbclasses){
     }
     if(!trouve){
         printf("Classe non trouvee\n") ;
+    } else{
+        Miseajour(classes, nbclasses);
     }
 } 
 
@@ -134,9 +154,12 @@ void SupprimerClasse(classe classes [], int *nbclasses){
         }
     }
     if (!trouve) {
-        printf("Classe non trouvée.\n");
+        printf("Classe non trouvée.\n") ;
+    } else {
+        Miseajour(classes, *nbclasses);
     }
 }
+
 
 // Charger les classes depuis un fichier au démarrage
 void ChargerClasses(classe classes[], int *nbClasses) {
