@@ -3,7 +3,7 @@
 
 #define MAX 100
 
-// Structure d'une classe
+//Structure d'une classe
 typedef struct {
     char code[10];
     char nom[40];
