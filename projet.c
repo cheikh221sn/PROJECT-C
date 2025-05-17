@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <string.h> 
 
 #define MAX 100
 
@@ -23,7 +23,7 @@ void Miseajour(classe classes[], int nbclasses){
                 classes[i].code,
                 classes[i].nom,
                 classes[i].niveau,
-                classes[i].eff);
+                classes[i].eff) ;
     }
     fclose(maj);
 }
