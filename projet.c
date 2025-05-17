@@ -11,7 +11,7 @@ typedef struct {
     int eff;
 } classe;
 
-// Ajouter une classe et enregistrement dans fichier
+// Ajouter une classe et enregistrement dans fichiers
 void AjouterClasse(classe classes[], int *nbClasses) {
     classe nouvelle;
     printf("Code : ");
