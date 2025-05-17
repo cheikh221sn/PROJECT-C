@@ -29,7 +29,7 @@ void Miseajour(classe classes[], int nbclasses){
 }
 
 
-// Ajouter une classe et enregistrement dans fichiers
+// Ajouter une classe et enregistrement dans fichier
 void AjouterClasse(classe classes[], int *nbClasses) {
     classe nouvelle;
     printf("Code : ");
