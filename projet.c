@@ -31,38 +31,47 @@ void Miseajour(classe classes[], int nbclasses){
 
 // Ajouter une classe et enregistrement dans fichier
 void AjouterClasse(classe classes[], int *nbClasses) {
+    int i, nbr_ajout ; 
     classe nouvelle;
-    printf("Code : ");
-    scanf("%s", nouvelle.code);
+    printf("Combien de classe voulez-vous ajouter ?" ) ;
+    scanf("%d", &nbr_ajout) ; 
+    nbClasses+=nbr_ajout;
+    for ( i = 0; i < nbr_ajout; i++)
+    {
+        printf("Code : ");
+        scanf("%s", nouvelle.code);
 
-    for (int i = 0; i < *nbClasses; i++) {
-        if (strcmp(classes[i].code, nouvelle.code) == 0) {
-            printf("Erreur : code deja existant.\n");
+        for (int i = 0; i < *nbClasses; i++) {
+            if (strcmp(classes[i].code, nouvelle.code) == 0) {
+                printf("Erreur : code deja existant.\n");
+                return;
+            }
+        }
+
+        printf("Nom : ");
+        scanf("%s", nouvelle.nom);
+        printf("Niveau : ");
+        scanf("%s", nouvelle.niveau);
+        printf("Effectif : ");
+        scanf("%d", &nouvelle.eff);
+
+        classes[*nbClasses] = nouvelle;
+        (*nbClasses)++;
+
+        FILE *cla = fopen("/home/general-tech/Documents/PROJECT-C/Classes.txt", "a");
+        if (cla == NULL) {
+            printf("Erreur : impossible d'ouvrir le fichier.\n");
             return;
         }
+        fprintf(cla, "%s %s %s %d\n", nouvelle.code, nouvelle.nom, nouvelle.niveau, nouvelle.eff);
+        fclose(cla);
+
+        printf("Classe ajoutée et enregistrée avec succès.\n");
     }
 
-    printf("Nom : ");
-    scanf("%s", nouvelle.nom);
-    printf("Niveau : ");
-    scanf("%s", nouvelle.niveau);
-    printf("Effectif : ");
-    scanf("%d", &nouvelle.eff);
-
-    classes[*nbClasses] = nouvelle;
-    (*nbClasses)++;
-
-    FILE *cla = fopen("/home/general-tech/Documents/PROJECT-C/Classes.txt", "a");
-    if (cla == NULL) {
-        printf("Erreur : impossible d'ouvrir le fichier.\n");
-        return;
-    }
-    fprintf(cla, "%s %s %s %d\n", nouvelle.code, nouvelle.nom, nouvelle.niveau, nouvelle.eff);
-    fclose(cla);
-
-    printf("Classe ajoutée et enregistrée avec succès.\n");
 }
-
+    
+    
 // Afficher toutes les classes
 void AfficherClasse(classe classes[], int nbClasses) {
     if (nbClasses == 0) {
