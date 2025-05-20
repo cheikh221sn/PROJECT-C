@@ -31,21 +31,29 @@ void Miseajour(classe classes[], int nbclasses){
 
 // Ajouter une classe et enregistrement dans fichier
 void AjouterClasse(classe classes[], int *nbClasses) {
-    int i, nbr_ajout ; 
-    classe nouvelle;
-    printf("Combien de classe voulez-vous ajouter ?" ) ;
-    scanf("%d", &nbr_ajout) ; 
-    nbClasses+=nbr_ajout;
-    for ( i = 0; i < nbr_ajout; i++)
-    {
+    int n;
+    printf("Combien de classes voulez-vous ajouter ? ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("\n--- Classe %d ---\n", i + 1);
+
+        classe nouvelle;
         printf("Code : ");
         scanf("%s", nouvelle.code);
 
-        for (int i = 0; i < *nbClasses; i++) {
-            if (strcmp(classes[i].code, nouvelle.code) == 0) {
-                printf("Erreur : code deja existant.\n");
-                return;
+        // Vérifier si le code existe déjà
+        int existe = 0;
+        for (int j = 0; j < *nbClasses; j++) {
+            if (strcmp(classes[j].code, nouvelle.code) == 0) {
+                printf("Erreur : code déjà existant.\n");
+                existe = 1;
+                break;
             }
+        }
+        if (existe) {
+            i--; // pour redemander la même position
+            continue;
         }
 
         printf("Nom : ");
@@ -58,6 +66,7 @@ void AjouterClasse(classe classes[], int *nbClasses) {
         classes[*nbClasses] = nouvelle;
         (*nbClasses)++;
 
+        // Enregistrer immédiatement dans le fichier
         FILE *cla = fopen("/home/general-tech/Documents/PROJECT-C/Classes.txt", "a");
         if (cla == NULL) {
             printf("Erreur : impossible d'ouvrir le fichier.\n");
@@ -68,8 +77,8 @@ void AjouterClasse(classe classes[], int *nbClasses) {
 
         printf("Classe ajoutée et enregistrée avec succès.\n");
     }
-
 }
+
     
     
 // Afficher toutes les classes
@@ -111,38 +120,69 @@ void RechercherClasse(classe classes[], int nbclasses){
     }
 } 
 
-//Fonction Modifier
-void ModifierClasse(classe classes[], int nbclasses){
-    char codeRecherche [10] ;
-    int trouve = 0 ;
-    printf("Entrez le code de la classe a modifier") ; 
-    scanf("%s", codeRecherche) ;
-    for (int i = 0; i< nbclasses; i++){
-        if(strcmp(classes[i].code, codeRecherche) == 0 ){
-            printf("Classe trouvée. Veuillez saisir les nouvelles informations :\n") ;
+void ModifierClasse(classe classes[], int nbclasses) {
+    char codeRecherche[10];
+    int trouve = 0;
 
-            printf("Nouveau Nom : ") ;
-            scanf("%s", classes[i].nom) ;
+    printf("Entrez le code de la classe à modifier : ");
+    scanf("%s", codeRecherche);
 
-            printf("Nouveau Niveau : ") ;
-            scanf("%s", classes[i].niveau) ;
+    for (int i = 0; i < nbclasses; i++) {
+        if (strcmp(classes[i].code, codeRecherche) == 0) {
+            printf("Classe trouvée.\n");
 
-            printf("Nouveau Effectif : ") ;
-            scanf("%d", &classes[i].eff) ;
+            int choixModif;
+            printf("\nQue voulez-vous modifier ?\n");
+            printf("0. Annuler\n");
+            printf("1. Nom\n");
+            printf("2. Niveau\n");
+            printf("3. Effectif\n");
+            printf("4. Tous les champs\n");
+            printf("Votre choix : ");
+            scanf("%d", &choixModif);
 
-            printf("OK!, Modifcation Faite avec success\n") ;
+            switch (choixModif) {
+                case 0:
+                    printf("Modification annulée.\n");
+                    return;
+                case 1:
+                    printf("Nouveau nom : ");
+                    scanf("%s", classes[i].nom);
+                    break;
+                case 2:
+                    printf("Nouveau niveau : ");
+                    scanf("%s", classes[i].niveau);
+                    break;
+                case 3:
+                    printf("Nouvel effectif : ");
+                    scanf("%d", &classes[i].eff);
+                    break;
+                case 4:
+                    printf("Nouveau nom : ");
+                    scanf("%s", classes[i].nom);
+                    printf("Nouveau niveau : ");
+                    scanf("%s", classes[i].niveau);
+                    printf("Nouvel effectif : ");
+                    scanf("%d", &classes[i].eff);
+                    break;
+                default:
+                    printf("Choix invalide. Aucune modification.\n");
+                    return;
+            }
 
-            trouve =1 ;
-            break ;
+            printf("Modification effectuée avec succès.\n");
+            trouve = 1;
+            break;
         }
-            
     }
-    if(!trouve){
-        printf("Classe non trouvee\n") ;
-    } else{
-        Miseajour(classes, nbclasses);
+
+    if (!trouve) {
+        printf("Classe non trouvée.\n");
+    } else {
+         ModifierClasse(classes, nbclasses);
     }
-} 
+}
+
 
 void SupprimerClasse(classe classes [], int *nbclasses){
     char codeRecherche [10] ;
